@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Home_App',
+    'RA_Register_App',
+    'RA_Login_App',
+    'RA_reset_PWD_App',
 ]
 
 MIDDLEWARE = [

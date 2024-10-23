@@ -3147,3 +3147,72 @@ input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
 /* ****************************************************************************************** */
 /* ********************************* Reset PWD section end ********************************* */
 /* ****************************************************************************************** */
+
+
+/* ************************************************************************* */
+/*                          Footer Section Start                             */
+/* ************************************************************************* */
+
+
+.RA-footer {
+    border-top: 0.1rem solid #7b7a83;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.RA-footer > .footer-content > div {
+    display: inline-block;
+    margin: 0 2rem;
+    vertical-align: top;
+}
+
+.contact, .support, .social-media {
+    margin: 0 1.5rem;
+}
+
+.contact h6, .support h6, .social-media h6 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.con-icons i, .sm-icons i {
+    margin: 0 1rem;
+    font-size: 2rem;
+}
+
+.con-icons, .sm-icons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.copyrights {
+    font-size: 1.4rem;
+    color: black;
+    text-align: center;
+    padding: 1rem;
+    margin: 0;
+}
+
+.dark-theme .RA-footer {
+    border-top: 0.1rem solid #e9efef;
+    color:white;
+}
+
+.dark-theme .copyrights {
+    color:white;
+}
+
+
+/* ************************************************************************* */
+/*                         Footer Section End                            */
+/* ************************************************************************* */
+

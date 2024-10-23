@@ -1,0 +1,332 @@
+:root {
+    --color-primary-a20: #705eff;
+    --color-primary-a10: #5a46d3;
+    --color-surface-a0: #f0e7ff; 
+    --color-surface-a10: #282828;
+    --color-surface-a20: #3f3f3f;
+}
+
+.Reset-password-section {
+    padding-left: 110px;
+    padding-top: 90px;
+    padding-right: 40px;
+    padding-bottom: 290px;
+    margin-bottom:-85px;
+    margin-right:-8px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-primary-a20);
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(107, 84, 229, 1);
+}
+
+.header-title {
+    color: white;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+.sidebar {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    height: calc(100% - 50px);
+    width: 50px;
+    background-color: white;
+    padding: 10px;
+    transition: width 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar:hover {
+    width: 200px; 
+}
+
+.menu-list {
+    list-style: none;
+    line-height: 15px;
+    padding: 0;
+    margin-top: 10px; 
+}
+
+.menu-icon {
+     margin:10px;
+}
+
+.menu-list li {
+    padding: 10px;
+    color: black;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.menu-list li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 25px;
+    color: black;
+    font-size:20px;
+}
+
+.menu-text {
+    display: none;
+}
+
+.sidebar:hover .menu-text {
+    display: inline;
+    margin-left: 10px;
+}
+
+.menu-list li:hover {
+    background-color: var(--color-primary-a20);
+    color: white;
+    border-radius: 5px;
+}
+
+.menu-list li:hover a {
+    color: white;
+}
+
+.menu-list li:active {
+    background-color: var(--color-primary-a10);
+}
+
+.sidebar:hover {
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right:4rem;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+   
+}
+
+.toggle-label .toggle-slider {
+    width: 50px;
+    height: 24px;
+    background: #ccc;
+    border-radius: 50px;
+    position: relative;
+    transition: background 0.3s;
+}
+
+.toggle-label .toggle-slider::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"]:checked + .toggle-label .toggle-slider {
+    background: #4caf50;
+}
+
+input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
+    transform: translateX(26px);
+}
+
+.icon-sun, .icon-moon {
+    font-size: 1.2em;
+    color: #fff;
+}
+
+
+
+.dark-theme .sidebar {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    height: calc(100% - 50px);
+    width: 50px;
+    background-color: var(--color-surface-a10);
+    padding: 10px;
+    transition: width 0.3s;
+    box-shadow: 2px 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.dark-theme .sidebar:hover {
+    width: 200px;
+    box-shadow: 4px 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.dark-theme .menu-list {
+    list-style: none;
+    line-height: 35px;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.dark-theme .menu-icon {
+    margin: 10px;
+}
+
+.dark-theme .menu-list li {
+    padding: 10px;
+    color: white;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.dark-theme .menu-list li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 25px;
+    color: white;
+    font-size: 20px;
+}
+
+.dark-theme .menu-text {
+    display: none;
+}
+
+.dark-theme .sidebar:hover .menu-text {
+    display: inline;
+    margin-left: 10px;
+}
+
+.dark-theme .menu-list li:hover {
+    background-color: var(--color-primary-a20);
+    color: black;
+    border-radius: 5px;
+}
+
+.dark-theme .menu-list li:hover a {
+    color: black;
+}
+
+.dark-theme .menu-list li:active {
+    background-color: var(--color-primary-a10);
+}
+
+.dark-theme .sidebar:hover {
+    box-shadow: 4px 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.dark-theme .sidebar .menu-list li a i {
+    color: white;
+}
+
+.dark-theme .menu-list li:hover a i {
+    color: black;
+}
+
+.dark-theme, .dark-theme body {
+    background-color: #282828;
+    color: white;
+}
+
+.dark-theme .Login-section {
+    background-color: #282828;
+}
+
+.Reset-password-section-heading {
+    text-align: center;
+    color: var(--color-primary-a20);
+}
+
+.reset-password-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.reset-password-label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.reset-password-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.reset-password-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-primary-a20);
+    color: white;
+    border: 1.5px solid #FF21F2;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reset-password-button:hover {
+    background-color: #4d4dff;
+    border: 1.5px solid #FF21F2;
+    box-shadow: 0 0 5px 1px #FF21F2;
+}
+
+.reset-password-link {
+    text-align: center;
+}
+
+.reset-password-anchor {
+    color: var(--color-primary-a20);
+    text-decoration: none;
+}
+
+.reset-password-anchor:hover {
+    text-decoration: underline;
+}
+
+.dark-theme .reset-password-form {
+    background-color: var(--color-surface-a10);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 3px 12px; 
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    color: white;
+}
+
+.dark-theme .reset-password-input {
+    background-color: var(--color-surface-a10);
+    color: white;
+    border: 1px solid var(--color-primary-a20);
+    box-shadow: 0 3px 6px rgba(107, 84, 229, 0.5), 0 -2px 4px rgba(107, 84, 229, 0.5);
+}
+
+.dark-theme .reset-password-button {
+    border: 1px solid #FF5F1F;
+}
+
+.dark-theme .reset-password-button:hover {
+    box-shadow: 0 0 5px 1px #FF5F1F;
+}
+

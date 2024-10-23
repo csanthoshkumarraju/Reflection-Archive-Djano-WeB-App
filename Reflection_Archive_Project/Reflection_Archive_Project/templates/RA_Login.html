@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection Archive</title>
+    <link rel="stylesheet" href="{% static "RA_Login.css" %}">
+    <link rel="icon" href="{% static "RA_favicon.jpg" %}" type="image/jpeg"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="" defer></script> 
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title"> Reflection Archive </h1>
+        <h2 class="header-title">Welcome, <i>Guest!</i></h2>
+        <div class="theme-toggle">
+          <input type="checkbox" id="theme-switch" />
+          <label class="toggle-label" for="theme-switch">
+          <span class="icon-sun"><i class="fas fa-sun"></i></span>
+          <span class="toggle-slider"></span>
+          <span class="icon-moon"><i class="fas fa-moon"></i></span>
+          </label>
+         </div>
+    </header>
+    <aside class="sidebar">
+        <ul class="menu-list">
+            <li><a href="#"><i class="fa-solid fa-bars fa-2xl"></i><span class="menu-text">Menu</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-chart-line"></i><span class="menu-text">Dashboard</span></a></li>
+            <li><a href="#todos-section-nav-id"><i class="fa-solid fa-clipboard-check"></i><span class="menu-text">To Do</span></a></li>
+            <li><a href="#plans-section-nav-id"><i class="fa-solid fa-calendar-check"></i><span class="menu-text">Plans</span></a></li>
+            <li><a href="#achievements-section-nav-id"><i class="fa-solid fa-trophy"></i><span class="menu-text">Achievements</span></a></li>
+            <li><a href="#travellings-section-nav-id"><i class="fa-solid fa-plane fa-rotate-by" style="--fa-rotate-angle: 330deg;"></i><span class="menu-text">Travelling</span></a></li>
+            <li><a href="#experiences-section-nav-id"><i class="fa-solid fa-briefcase"></i><span class="menu-text">Experiences</span></a></li> 
+            <li><a href="#habits-section-nav-id"><i class="fa-regular fa-calendar-check"></i><span class="menu-text">Habits</span></a></li>
+            <li><a href="#memories-section-nav-id"><i class="fa-solid fa-sd-card"></i><span class="menu-text">Memories</span></a></li>
+            <li><a href="#goals-section-nav-id"><i class="fa-solid fa-bullseye"></i><span class="menu-text">Life Goals</span></a></li>
+            <li><a href="#Milestones-section-nav-id"><i class="fas fa-flag"></i><span class="menu-text">Milestones</span></a></li>
+           <li><a href="{% url "RA_register_page" %}"><i class="fa-solid fa-user-plus"></i><span class="menu-text">Register</span></a></li>
+<li><a href="{% url "RA_Login_page" %}"><i class="fa-solid fa-arrow-right-to-bracket"></i><span class="menu-text">Login</span></a></li>
+<li><a href="#"><i class="fa-solid fa-power-off"></i><span class="menu-text">Logout</span></a></li>
+
+        </ul>
+        
+         
+    </aside>
+
+    
+    <section class="Login-section" id="Login-section-nav-id">
+        <h2 class="Login-section-heading">Login</h2>
+      
+        <div class="login-form">
+            <form>
+                <label class="login-label" for="email">Registered Email ID</label>
+                <input class="login-input" type="email" id="email" placeholder="Enter your registered email" required>
+    
+                <label class="login-label" for="password">Password</label>
+                <input class="login-input" type="password" id="password" placeholder="Enter your password" required>
+    
+                <button class="login-button" type="submit">Login</button>
+            </form>
+            <p class="login-link">Don't have an account? <a class="login-anchor" href="{% url "RA_register_page" %}">Register</a></p>
+            <p class="forgot-password-link"><a class="forgot-password-anchor" href="{% url "RA_reset_pwd_page" %}">Forgot Password?</a></p>
+        </div>
+    </section>
+
+
+    <script>
+        const themeSwitch = document.getElementById('theme-switch');
+        themeSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+      
+    </script>
+    
+      
+    </body>
+    </html>
