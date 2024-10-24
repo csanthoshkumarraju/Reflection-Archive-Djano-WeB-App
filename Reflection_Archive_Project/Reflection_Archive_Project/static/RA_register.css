@@ -127,12 +127,12 @@
 } */
 
 .Register-section {
-    padding-left: 110px;
-    padding-top: 90px;
-    padding-right: 20px;
-    padding-bottom: 40px;
-    margin-bottom:-15px;
-    margin-right:-5px;
+    margin-left:110px;
+    margin-top:100px;
+    margin-right:10px;
+    /* margin-bottom:10px; */
+    padding-bottom:80px;
+    padding-right:20px;
 }
 
 
@@ -360,11 +360,9 @@ input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
     color: black;
 }
 
-.dark-theme, .dark-theme body {
-    background-color: var(--color-surface-a0);
+.dark-theme body {
+    background-color: #282828;
     color: white;
 }
 
-/* .dark-theme .RA-dashboard-section {
-    background-color: var(--color-surface-a0);
-} */
+

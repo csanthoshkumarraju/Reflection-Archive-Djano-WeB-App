@@ -51,28 +51,58 @@
         <h2 class="Login-section-heading">Login</h2>
       
         <div class="login-form">
-            <form>
+            <form method="post">
+                {% csrf_token %}
                 <label class="login-label" for="email">Registered Email ID</label>
-                <input class="login-input" type="email" id="email" placeholder="Enter your registered email" required>
-    
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                {% endif %}
+                
                 <label class="login-label" for="password">Password</label>
-                <input class="login-input" type="password" id="password" placeholder="Enter your password" required>
-    
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error">{{ form.password.errors }}</div>
+                {% endif %}
+                
+                {% if form.non_field_errors %}
+                    <div class="error">{{ form.non_field_errors }}</div>
+                {% endif %}
+                
                 <button class="login-button" type="submit">Login</button>
             </form>
-            <p class="login-link">Don't have an account? <a class="login-anchor" href="{% url "RA_register_page" %}">Register</a></p>
-            <p class="forgot-password-link"><a class="forgot-password-anchor" href="{% url "RA_reset_pwd_page" %}">Forgot Password?</a></p>
+            <p class="login-link">Don't have an account? <a class="login-anchor" href="{% url 'RA_register_page' %}">Register</a></p>
+            <p class="forgot-password-link"><a class="forgot-password-anchor" href="{% url 'RA_reset_pwd_page' %}">Forgot Password?</a></p>
         </div>
+        
+        
     </section>
 
 
-    <script>
+    {% comment %} <script>
         const themeSwitch = document.getElementById('theme-switch');
         themeSwitch.addEventListener('change', () => {
             document.body.classList.toggle('dark-theme');
         });
       
+    </script> {% endcomment %}
+
+    <script>
+        const themeSwitch = document.getElementById('theme-switch');
+    
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+            themeSwitch.checked = currentTheme === 'dark';
+        }
+    
+        themeSwitch.addEventListener('change', () => {
+            const isDark = themeSwitch.checked;
+            document.body.classList.toggle('dark-theme', isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
     </script>
+    
     
       
     </body>

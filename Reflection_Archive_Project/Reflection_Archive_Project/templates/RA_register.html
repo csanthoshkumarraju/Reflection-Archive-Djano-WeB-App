@@ -48,38 +48,50 @@
 
     <section class="Register-section" id="Register-section-nav-id">
         <h2 class="Register-section-heading">Register</h2>
-      
+    
         <div class="register-form">
-            <form>
-                <label class="register-label" for="first-name">First Name</label>
-                <input class="register-input" type="text" id="first-name" placeholder="Enter your first name" required>
-    
-                <label class="register-label" for="last-name">Last Name</label>
-                <input class="register-input" type="text" id="last-name" placeholder="Enter your last name" required>
-    
-                <label class="register-label" for="email">Email ID</label>
-                <input class="register-input" type="email" id="email" placeholder="Enter your email" required>
-    
-                <label class="register-label" for="password">Password</label>
-                <input class="register-input" type="password" id="password" placeholder="Enter your password" required>
-    
-                <label class="register-label" for="confirm-password">Confirm Password</label>
-                <input class="register-input" type="password" id="confirm-password" placeholder="Confirm your password" required>
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <label class="register-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                {% endfor %}
     
                 <button class="register-button" type="submit">Register</button>
             </form>
             <p class="register-link">Already have an account? <a class="register-anchor" href="{% url "RA_Login_page" %}">Login</a></p>
         </div>
-      
     </section>
+    
 
-    <script>
+    {% comment %} <script>
         const themeSwitch = document.getElementById('theme-switch');
         themeSwitch.addEventListener('change', () => {
             document.body.classList.toggle('dark-theme');
         });
       
+    </script> {% endcomment %}
+
+    <script>
+        const themeSwitch = document.getElementById('theme-switch');
+    
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+            themeSwitch.checked = currentTheme === 'dark';
+        }
+    
+        themeSwitch.addEventListener('change', () => {
+            const isDark = themeSwitch.checked;
+            document.body.classList.toggle('dark-theme', isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
     </script>
+    
     
       
     </body>

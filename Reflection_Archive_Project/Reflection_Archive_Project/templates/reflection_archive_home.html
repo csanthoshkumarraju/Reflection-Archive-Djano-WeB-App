@@ -2486,10 +2486,26 @@
 
 
 <script>
-    const themeSwitch = document.getElementById('theme-switch');
+    {% comment %} const themeSwitch = document.getElementById('theme-switch');
     themeSwitch.addEventListener('change', () => {
         document.body.classList.toggle('dark-theme');
-    });
+    }); {% endcomment %}
+
+const themeSwitch = document.getElementById('theme-switch');
+
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+    document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+    themeSwitch.checked = currentTheme === 'dark';
+}
+
+themeSwitch.addEventListener('change', () => {
+    const isDark = themeSwitch.checked;
+    document.body.classList.toggle('dark-theme', isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+
+    
   
 document.getElementById("close-icon").addEventListener("click", function() {
     document.getElementById("notification").style.display = "none";
