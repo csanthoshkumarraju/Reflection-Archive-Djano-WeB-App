@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="RA-dashboard-section">
+    <h1 class="dashboard-section-heading"> Dashboard </h1>
+  
+    <div class="dashboard-grid">
+      
+      <div class="dashboard-card">
+        <h1 class="card-heading">To Do</h1>
+        <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> <span class="card-text-todo"><b>100</b></span></p>
+<p>In progress <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> <span class="card-text-inp"><b>200</b></span></p>
+<p>Completed <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> <span class="card-text-com"><b>300</b></span></p>
+      </div>
+      
+      <div class="dashboard-card">
+        <h1 class="card-heading">Plans</h1>
+        <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> <span class="card-text-todo"><b>50</b></span></p>
+<p>In progress <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> <span class="card-text-inp"><b>100</b></span></p>
+<p>Completed <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> <span class="card-text-com"><b>200</b></span></p>
+      </div>
+      
+      <div class="dashboard-card">
+        <h1 class="card-heading">Achievements</h1>
+        <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> <span class="card-text-todo"><b>3</b></span></p>
+<p>In progress <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> <span class="card-text-inp"><b>2</b></span></p>
+<p>Completed <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> <span class="card-text-com"><b>5</b></span></p>
+      </div>
+      
+      <div class="dashboard-card">
+        <h1 class="card-heading">Travelling</h1>
+        <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> <span class="card-text-todo"><b>10</b></span></p>
+<p>In progress <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> <span class="card-text-inp"><b>1</b></span></p>
+<p>Completed <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> <span class="card-text-com"><b>30</b></span></p>
+      </div>
+      
+      <div class="dashboard-card">
+<h1 class="card-heading">Experiences</h1>
+<p> Good <i class="fa-solid fa-thumbs-up" style="color: #03C03C;"></i> <span class="card-text-com"><b>30</b></span></p>
+<p> Bad <i class="fa-solid fa-thumbs-down" style="color: #FF0800;"></i> <span class="card-text-bad"><b>30</b></span></p>
+</div>
+
+      <div class="dashboard-card">
+            <h1 class="card-heading">Habits</h1>
+            <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i>                 <span class="card-text-todo"><b>10</b></span></p>
+            <p>In progress <i class="fa-regular fa-hourglass-half" style="color:                    #ff9300;"></i> <span class="card-text-inp"><b>1</b></span></p>
+             <p>Completed <i class="fa-solid fa-circle-check" style="color:                          #00f900;"></i> <span class="card-text-com"><b>30</b></span></p>
+      </div>
+      
+        <div class="dashboard-card">
+              <h1 class="card-heading">Memories</h1>
+              <p> Best <i class="fa-solid fa-thumbs-up" style="color: #03C03C;">                      </i> <span class="card-text-com"><b>30</b></span></p>
+              <p> Worst <i class="fa-solid fa-thumbs-down" style="color: #FF0800;">                   </i> <span class="card-text-bad"><b>30</b></span></p>
+      </div>
+      
+      <div class="dashboard-card">
+            <h1 class="card-heading">Life Goals</h1>
+            <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i>                 <span class="card-text-todo"><b>10</b></span></p>
+            <p>In progress <i class="fa-regular fa-hourglass-half" style="color:                    #ff9300;"></i> <span class="card-text-inp"><b>1</b></span></p>
+             <p>Completed <i class="fa-solid fa-circle-check" style="color:                          #00f900;"></i> <span class="card-text-com"><b>30</b></span></p>
+      </div>
+      
+      
+      <div class="dashboard-card">
+            <h1 class="card-heading">Milestones</h1>
+            {% comment %} <p>To Do <i class="fa-solid fa-table-list" style="color: #0433ff;"></i>                 <span class="card-text-todo"><b>10</b></span></p>
+            <p>In progress <i class="fa-regular fa-hourglass-half" style="color:                    #ff9300;"></i> <span class="card-text-inp"><b>1</b></span></p> {% endcomment %}
+             <p>Completed <i class="fa-solid fa-circle-check" style="color:                          #00f900;"></i> <span class="card-text-com"><b>30</b></span></p>
+      </div>
+       
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection Archive</title>
+    <link rel="stylesheet" href="{% static "headersidebar.css" %}"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="" defer></script> 
+</head>
+<body>
+    
+    <header class="header">
+        <h1 class="header-title"> Reflection Archive </h1>
+        <h2 class="header-title">Welcome, <i> {{ user_name }} </i></h2>
+        <div class="theme-toggle">
+          <input type="checkbox" id="theme-switch" />
+          <label class="toggle-label" for="theme-switch">
+          <span class="icon-sun"><i class="fas fa-sun"></i></span>
+          <span class="toggle-slider"></span>
+          <span class="icon-moon"><i class="fas fa-moon"></i></span>
+          </label>
+         </div>
+    </header>
+    <aside class="sidebar">
+        <ul class="menu-list">
+            <li><a href="#"><i class="fa-solid fa-bars fa-2xl"></i><span class="menu-text">Menu</span></a></li>
+            <li><a href="{% url "dashboard" user.id %}"><i class="fa-solid fa-chart-line"></i><span class="menu-text">Dashboard</span></a></li>
+            <li><a href="{% url "todo_page" user.id %}"><i class="fa-solid fa-clipboard-check"></i><span class="menu-text">To Do</span></a></li>
+            <li><a href="#plans-section-nav-id"><i class="fa-solid fa-calendar-check"></i><span class="menu-text">Plans</span></a></li>
+            <li><a href="#achievements-section-nav-id"><i class="fa-solid fa-trophy"></i><span class="menu-text">Achievements</span></a></li>
+            <li><a href="#travellings-section-nav-id"><i class="fa-solid fa-plane fa-rotate-by" style="--fa-rotate-angle: 330deg;"></i><span class="menu-text">Travelling</span></a></li>
+            <li><a href="#experiences-section-nav-id"><i class="fa-solid fa-briefcase"></i><span class="menu-text">Experiences</span></a></li> 
+            <li><a href="#habits-section-nav-id"><i class="fa-regular fa-calendar-check"></i><span class="menu-text">Habits</span></a></li>
+            <li><a href="#memories-section-nav-id"><i class="fa-solid fa-sd-card"></i><span class="menu-text">Memories</span></a></li>
+            <li><a href="#goals-section-nav-id"><i class="fa-solid fa-bullseye"></i><span class="menu-text">Life Goals</span></a></li>
+            <li><a href="#Milestones-section-nav-id"><i class="fas fa-flag"></i><span class="menu-text">Milestones</span></a></li>
+           <li><a href="#Register-section-nav-id"><i class="fa-solid fa-user-plus"></i><span class="menu-text">Register</span></a></li>
+<li><a href="#Login-section-nav-id"><i class="fa-solid fa-arrow-right-to-bracket"></i><span class="menu-text">Login</span></a></li>
+<li><a href="{% url "RA_Login_page" %}"><i class="fa-solid fa-power-off"></i></i><span class="menu-text">Logout</span></a></li>
+
+        </ul>
+        
+         
+    </aside>
+
+
+    <script>
+        const themeSwitch = document.getElementById('theme-switch');
+    
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+            themeSwitch.checked = currentTheme === 'dark';
+        }
+    
+        themeSwitch.addEventListener('change', () => {
+            const isDark = themeSwitch.checked;
+            document.body.classList.toggle('dark-theme', isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      
+    document.getElementById("close-icon").addEventListener("click", function() {
+        document.getElementById("notification").style.display = "none";
+    });
+      
+      
+    function showSection(sectionId) {
+        const sections = ['todo-section', 'in-progress-section', 'completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveLink(link, sectionId) {
+        const links = document.querySelectorAll('.todo-todos');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showSection(sectionId);
+    }
+    
+    function showPlanSection(sectionId) {
+        const sections = ['plans-section', 'plans-in-progress-section', 'plans-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActivePlanLink(link, sectionId) {
+        const links = document.querySelectorAll('.plan-plans');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showPlanSection(sectionId);
+    }
+    
+      
+    function showAchievementSection(sectionId) {
+        const sections = ['achievements-section', 'achievements-in-progress-section', 'achievements-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveAchievementLink(link, sectionId) {
+        const links = document.querySelectorAll('.achievement-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showAchievementSection(sectionId);
+    }
+    
+      
+    function showTravellingSection(sectionId) {
+        const sections = ['travellings-section', 'travellings-in-progress-section', 'travellings-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveTravellingLink(link, sectionId) {
+        const links = document.querySelectorAll('.travelling-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showTravellingSection(sectionId);
+    }
+      
+    
+    function showExperienceSection(sectionId) {
+        const sections = ['experiences-section', 'experiences-in-progress-section', 'experiences-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveExperienceLink(link, sectionId) {
+        const links = document.querySelectorAll('.experience-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showExperienceSection(sectionId);
+    }
+    
+      
+    function showHabitSection(sectionId) {
+        const sections = ['habits-section', 'habits-in-progress-section', 'habits-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveHabitLink(link, sectionId) {
+        const links = document.querySelectorAll('.habit-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showHabitSection(sectionId);
+    }
+      
+    
+    function showMemorySection(sectionId) {
+        const sections = ['memories-section', 'memories-in-progress-section', 'memories-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveMemoryLink(link, sectionId) {
+        const links = document.querySelectorAll('.memory-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showMemorySection(sectionId);
+    }
+      
+    function showGoalSection(sectionId) {
+        const sections = ['goals-section', 'goals-in-progress-section', 'goals-completed-section'];
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            element.style.display = (section === sectionId) ? 'block' : 'none';
+        });
+    }
+    
+    function setActiveGoalLink(link, sectionId) {
+        const links = document.querySelectorAll('.goal-link');
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        showGoalSection(sectionId);
+    }
+    
+    
+      
+    let toastShown = false;
+    
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        toast.style.opacity = '1';
+    
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
+    
+    function updateWidth() {
+        const screenWidth = window.innerWidth;
+    
+        if (!toastShown) {
+            showToast(`Screen width: ${screenWidth}px`);
+            toastShown = true;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        updateWidth();
+        window.addEventListener('resize', () => {
+            updateWidth();
+        });
+    });
+    
+    
+    </script>
+    
+      
+    </body>
+    </html>

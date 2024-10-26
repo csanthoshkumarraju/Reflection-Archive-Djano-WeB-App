@@ -40,7 +40,7 @@ def RA_Login_page(request):
             if user is not None:
                 auth_login(request, user)
                 messages.success(request, 'Login Successful')
-                return HttpResponse('Login successful')  # Keep for now
+                return redirect('dashboard',user_id=user.id)  
             else:
                 form.add_error(None, 'Invalid email or password')
     else:

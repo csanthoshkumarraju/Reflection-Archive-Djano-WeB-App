@@ -23,4 +23,6 @@ urlpatterns = [
     path('',include('RA_Register_App.urls')),
     path('',include('RA_Login_App.urls')),
     path('',include('RA_reset_PWD_App.urls')),
+    path('',include('dashboardapp.urls')),
+    path('',include('ToDoApp.urls')),
 ]

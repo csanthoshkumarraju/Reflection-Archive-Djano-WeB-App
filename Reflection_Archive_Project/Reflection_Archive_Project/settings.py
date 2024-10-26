@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'RA_Register_App',
     'RA_Login_App',
     'RA_reset_PWD_App',
+    'dashboardapp',
+    'ToDoApp',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'context_processors.user_context.user_context',
             ],
         },
     },
