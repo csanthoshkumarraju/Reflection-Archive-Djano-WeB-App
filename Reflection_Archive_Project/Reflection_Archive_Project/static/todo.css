@@ -230,9 +230,22 @@
 
 .pagination-number:hover {
     text-decoration: none;
-    color: var(--color-primary-a20);
+    color: #FF5733;
     font-weight: bold;
 }
+
+
+.pagination-number.active {
+    background-color: var(--color-primary-a20); 
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
 
 .pagination-button:hover {
     background-color: var(--color-primary-a20);
@@ -248,7 +261,7 @@
 
 .dark-theme .pagination-number:hover {
     text-decoration: none;
-    color: var(--color-primary-a20);
+    color: #FF5733;
     font-weight: bold;
 }
 
