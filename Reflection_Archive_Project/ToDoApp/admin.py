@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import todo_model
 
-# Register your models here.
+class TodoModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'todo', 'status')  # List the fields you want to display in the admin list view
+
+admin.site.register(todo_model, TodoModelAdmin)
+

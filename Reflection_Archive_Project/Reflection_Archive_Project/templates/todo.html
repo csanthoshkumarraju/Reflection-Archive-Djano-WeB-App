@@ -16,12 +16,17 @@
 <section class="to-do-section" id="todos-section-nav-id">
     <h2 class="to-do-section-heading">To Do</h2>
     
-    <form id="todo-form">
-        <input type="text" class="todo-add-input" placeholder="Add a todo task" required>
-        <button type="submit" class="todo-add-button">
-            <i class="fa-solid fa-plus fa-lg"></i> Add
-        </button>
-    </form>
+    <form id="todo-form" method="post">
+      {% csrf_token %}
+      <div class="todo-form-container">
+          {{ form.todo }}
+          <button type="submit" class="todo-add-button">
+              <i class="fa-solid fa-plus fa-lg"></i> Add
+          </button>
+      </div>
+  </form>
+  
+  
   
     <div class="todo-progress-urls">
     <a href="#todos-section-nav-id" class="todo-todos" onclick="setActiveLink(this, 'todo-section'); return false;">
@@ -36,80 +41,51 @@
 </div>
 
 
-
-
-    <div class="todo-section" id="todo-section">
-        <div class="todo-grid" id="todo-grid">
-            <div class="todo-card">
-            <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
-            <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-            Task 1
+<div class="todo-section" id="todo-section">
+  <div class="todo-grid" id="todo-grid">
+      {% if todos %}
+          {% for todo in todos %}
+          <div class="todo-card">
+              <div class="todo-tags">
+                  <span class="todo-tag">{{ todo.status }}</span>
               </div>
-            <div class="todo-card">
-              <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
               <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-              Task 2</div>
-            <div class="todo-card">
-              <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
-              <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-              Task 3</div>
-            <div class="todo-card">
-              <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
-              <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-              Task 4</div>
-            <div class="todo-card">
-              <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
-              <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-              Task 5</div>
-            <div class="todo-card">
-              <div class="todo-tags">
-                    <span class="todo-tag">To Do</span>
-            </div>
-              <div class="todo-action-buttons">
-            <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i> </button> 
-            <button><i class="fa-regular fa-hourglass-half todo-btn" style="color:                    #ff9300;"></i></button> 
-            <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>   </div>
-              Task 6</div>
-        </div>
-        <div class="pagination">
-            <a href="#" class="pagination-button">
-                <i class="fa-solid fa-caret-left"></i>
-            </a>
-            <span class="pagination-numbers">
-                <a href="#" class="pagination-number">1</a>
-                <a href="#" class="pagination-number">2</a>
-                <a href="#" class="pagination-number">3</a>
-            </span>
-            <a href="#" class="pagination-button">
-                <i class="fa-solid fa-caret-right"></i>
-            </a>
-        </div>
-    </div>
+                  <button><i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i></button>
+                  <button><i class="fa-regular fa-hourglass-half todo-btn" style="color: #ff9300;"></i></button>
+                  <button><i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i></button>
+              </div>
+              {{ todo.todo }}
+          </div>
+          {% endfor %}
+      {% else %}
+          <div class="no-todos">
+              <p>Please add a new todo.No todo tasks remaining.</p>
+          </div>
+      {% endif %}
+  </div>
+  
+  <div class="pagination">
+    <a href="?page={{ todos.previous_page_number }}" class="pagination-button" {% if not todos.has_previous %}style="display:none;"{% endif %}>
+        <i class="fa-solid fa-caret-left"></i>
+    </a>
+    <span class="pagination-numbers">
+        {% for num in todos.paginator.page_range %}
+            {% if todos.number == num %}
+                <span class="pagination-number active">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}" class="pagination-number">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+    </span>
+    <a href="?page={{ todos.next_page_number }}" class="pagination-button" {% if not todos.has_next %}style="display:none;"{% endif %}>
+        <i class="fa-solid fa-caret-right"></i>
+    </a>
+</div>
+
+</div>
+
+
+    
 
     <div class="in-progress-section" id="in-progress-section" style="display: none;">
         <div class="in-progress-grid" id="in-progress-grid">

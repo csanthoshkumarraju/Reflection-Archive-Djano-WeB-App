@@ -10,6 +10,11 @@
     color:var(--color-primary-a20);
 }
 
+.todo-form-container {
+    display: flex;
+    align-items: center;
+}
+
 .todo-add-input {
     background-color: #EFEFEF;
     color: var(--color-primary-a20);
