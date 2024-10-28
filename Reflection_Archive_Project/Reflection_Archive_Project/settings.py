@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'RA_reset_PWD_App',
     'dashboardapp',
     'ToDoApp',
+    'PlansApp',
 ]
 
 MIDDLEWARE = [

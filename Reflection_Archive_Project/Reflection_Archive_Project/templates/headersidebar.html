@@ -30,7 +30,7 @@
             <li><a href="#"><i class="fa-solid fa-bars fa-2xl"></i><span class="menu-text">Menu</span></a></li>
             <li><a href="{% url "dashboard" user.id %}"><i class="fa-solid fa-chart-line"></i><span class="menu-text">Dashboard</span></a></li>
             <li><a href="{% url "todo_page" user.id %}"><i class="fa-solid fa-clipboard-check"></i><span class="menu-text">To Do</span></a></li>
-            <li><a href="#plans-section-nav-id"><i class="fa-solid fa-calendar-check"></i><span class="menu-text">Plans</span></a></li>
+            <li><a href="{% url "plans_page" user.id  %}"><i class="fa-solid fa-calendar-check"></i><span class="menu-text">Plans</span></a></li>
             <li><a href="#achievements-section-nav-id"><i class="fa-solid fa-trophy"></i><span class="menu-text">Achievements</span></a></li>
             <li><a href="#travellings-section-nav-id"><i class="fa-solid fa-plane fa-rotate-by" style="--fa-rotate-angle: 330deg;"></i><span class="menu-text">Travelling</span></a></li>
             <li><a href="#experiences-section-nav-id"><i class="fa-solid fa-briefcase"></i><span class="menu-text">Experiences</span></a></li> 

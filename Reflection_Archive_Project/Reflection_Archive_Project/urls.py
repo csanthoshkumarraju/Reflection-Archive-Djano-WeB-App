@@ -25,4 +25,5 @@ urlpatterns = [
     path('',include('RA_reset_PWD_App.urls')),
     path('',include('dashboardapp.urls')),
     path('',include('ToDoApp.urls')),
+    path('',include('PlansApp.urls')),
 ]
