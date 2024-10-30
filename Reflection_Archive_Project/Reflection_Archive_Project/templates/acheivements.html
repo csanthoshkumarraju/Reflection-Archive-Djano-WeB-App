@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'acheivements.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="achievements-section" id="achievements-section-nav-id">
+    <h2 class="achievements-section-heading">Achievements</h2>
+    
+    <form id="achievement-form" method="post">
+        {% csrf_token %}
+        <div class="achievement-form-container">
+            <input type="text" name="achievement_text" class="achievement-add-input" required placeholder="Add an achievement">
+            <button type="submit" name="add_achievement" class="achievement-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+    
+  
+    <div class="achievement-progress-urls">
+        <a href="#achievements-section-nav-id" class="achievement-link" onclick="setActiveAchievementLink(this, 'achievements-section'); return false;">
+            <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> Achievements
+        </a>
+        <a href="#achievements-section-nav-id" class="achievement-link" onclick="setActiveAchievementLink(this, 'achievements-in-progress-section'); return false;">
+            <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> In Progress
+        </a>
+        <a href="#achievements-section-nav-id" class="achievement-link" onclick="setActiveAchievementLink(this, 'achievements-completed-section'); return false;">
+            <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> Completed
+        </a>
+    </div>
+
+    <div class="achievement-section" id="achievements-section">
+        
+        <div class="achievement-grid" id="achievement-grid">
+            {% if achievements %}
+                {% for achievement in achievements %}
+                <div class="achievement-card">
+                    <div class="achievement-tags">
+                        <span class="achievement-tag">{{ achievement.achievment_status }}</span>
+                    </div>
+                    <div class="achievement-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                            {% if editing_achievement_id == achievement.id %}
+                                <input type="text" name="achievement_text" value="{{ editing_achievement_text }}" required>
+                                <button type="submit" name="save_achievement">
+                                    <i class="fa-solid fa-check achievement-btn" style="color: #28a745;"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" name="edit_achievement">
+                                    <i class="fa-solid fa-pen achievement-btn" style="color: #d58400;"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+        
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                            <button type="submit" name="mark_in_progress">
+                                <i class="fa-regular fa-hourglass-half achievement-btn" style="color: #ff9300;"></i>
+                            </button>
+                        </form>
+        
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                            <button type="submit" name="delete_achievement">
+                                <i class="fa-solid fa-trash achievement-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="display: {% if editing_achievement_id == achievement.id %}none{% else %}inline{% endif %};">{{ achievement.acheiement }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-achievements">
+                    <p style="text-align: center;">Please add a new achievement. No achievements recorded.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="achievement-pagination">
+            <span class="achievement-pagination-numbers">
+                {% if achievements.has_previous %}
+                    <a href="?page=1" class="achievement-pagination-button"><i class="fa-solid fa-caret-left"></i></a>
+                {% endif %}
+                {% for num in achievements.paginator.page_range %}
+                    {% if achievements.number == num %}
+                        <span class="achievement-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="achievement-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if achievements.has_next %}
+                    <a href="?page={{ achievements.paginator.num_pages }}" class="achievement-pagination-button"><i class="fa-solid fa-caret-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+
+
+    </div>
+
+    <div class="achievements-in-progress-section" id="achievements-in-progress-section" style="display: none;">
+        
+        <div class="achievements-in-progress-grid" id="achievements-in-progress-grid">
+            {% if in_progress_tasks %}
+                {% for task in in_progress_tasks %}
+                <div class="achievements-in-progress-card">
+                    <div class="achievement-tags">
+                        <span class="achievement-inp-tag">{{ task.achievment_status }}</span>
+                    </div>
+                    <div class="achievement-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ task.id }}">
+                            <button type="submit" name="complete_task">
+                                <i class="fa-solid fa-circle-check" style="color: #00f900;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ task.id }}">
+                            <button type="submit" name="delete_achievement">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ task.acheiement }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-achievements">
+                    <p style="text-align: center;">No achievements in progress.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="achievement-pagination">
+            <span class="achievement-pagination-numbers">
+                {% if in_progress_tasks.has_previous %}
+                    <a href="?in_progress_page=1" class="achievement-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in in_progress_tasks.paginator.page_range %}
+                    {% if in_progress_tasks.number == num %}
+                        <span class="achievement-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?in_progress_page={{ num }}" class="achievement-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if in_progress_tasks.has_next %}
+                    <a href="?in_progress_page={{ in_progress_tasks.paginator.num_pages }}" class="achievement-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+
+    </div>
+
+    <div class="achievements-completed-section" id="achievements-completed-section" style="display: none;">
+        
+        <div class="achievements-completed-grid" id="achievements-completed-grid">
+            {% if completed_tasks %}
+                {% for achievement in completed_tasks %}
+                <div class="achievements-completed-card">
+                    <div class="achievement-tags">
+                        <span class="achievement-completed-tag">{{ achievement.achievment_status }}</span>
+                    </div>
+                    <div class="achievement-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="achievement_id" value="{{ achievement.id }}">
+                            <button type="submit" name="delete_achievement">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ achievement.acheiement }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-achievements">
+                    <p style="text-align: center;">No completed achievements.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="achievement-pagination">
+            <span class="pagination-numbers">
+                {% if completed_tasks.has_previous %}
+                    <a href="?completed_page=1" class="achievement-pagination-button"><i class="fa-solid fa-caret-left"></i></a>
+                {% endif %}
+                {% for num in completed_tasks.paginator.page_range %}
+                    {% if completed_tasks.number == num %}
+                        <span class="achievement-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?completed_page={{ num }}" class="achievement-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if completed_tasks.has_next %}
+                    <a href="?completed_page={{ completed_tasks.paginator.num_pages }}" class="achievement-pagination-button"><i class="fa-solid fa-caret-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+
+    </div>
+</section>
+
+
+{% endblock content %}

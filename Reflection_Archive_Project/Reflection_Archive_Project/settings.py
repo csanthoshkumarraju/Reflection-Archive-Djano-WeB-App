@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'dashboardapp',
     'ToDoApp',
     'PlansApp',
+    'AchievementApp',
 ]
 
 MIDDLEWARE = [

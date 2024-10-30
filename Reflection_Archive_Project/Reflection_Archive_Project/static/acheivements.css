@@ -1,0 +1,276 @@
+.achievements-section {
+    margin-left: 110px;
+    margin-top: 100px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+}
+
+.achievements-section-heading {
+    text-align: center;
+    color: var(--color-primary-a20);
+}
+
+.ach-form-container {
+    display: flex;
+    align-items: center;
+}
+
+.achievement-add-input {
+    background-color: #EFEFEF;
+    color: var(--color-primary-a20);
+    border: 1px solid var(--color-primary-a20);
+    border-radius: 5px;
+    width: 50%;
+    height: 35px;
+    box-shadow: 0 3px 6px rgba(107, 84, 229, 0.5), 0 -2px 4px rgba(107, 84, 229, 0.5);
+}
+
+.achievement-add-input::placeholder {
+    color: var(--color-primary-a20);
+    text-align: center;
+}
+
+.dark-theme .achievement-add-input {
+    background-color: var(--color-surface-a10);
+    color: var(--color-primary-a20);
+    border: 1px solid var(--color-primary-a20);
+    box-shadow: 0 3px 6px rgba(107, 84, 229, 0.5), 0 -2px 4px rgba(107, 84, 229, 0.5);
+}
+
+.achievement-add-button {
+   background-color: var(--color-primary-a20);
+   color: white;
+   border: 1.5px solid #FF21F2;
+   border-radius: 5px;
+   height: 36px;
+   margin-left: 1rem;
+}
+
+.achievement-add-button:hover {
+    background-color: #4d4dff;
+    border: 1.5px solid #FF21F2;
+    box-shadow: 0 0 5px 1px #FF21F2;
+}
+
+.dark-theme .achievement-add-button {
+    border: 1px solid #FF5F1F;
+}
+
+.dark-theme .achievement-add-button:hover {
+      box-shadow: 0 0 5px 1px #FF5F1F;
+}
+
+.achievement-progress-urls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.achievement-link {
+    border: 1.5px solid grey;
+    color: black;
+    text-decoration: none;
+    padding: 0.3rem 1rem;
+    border-radius: 5px;
+    transition: all 0.1s ease;
+    margin-top: 1.5rem;
+}
+
+.achievement-link:hover {
+    color: var(--color-primary-a20);
+}
+
+.achievement-link.active {
+    background-color: var(--color-primary-a20); 
+    color: white; 
+}
+
+.dark-theme .achievement-link {
+    color: white;
+    border: 1.5px solid #444E60; 
+}
+
+.dark-theme .achievement-link:hover {
+    color: var(--color-primary-a20);
+}
+
+.dark-theme .achievement-link.active {
+    background-color: var(--color-primary-a20); 
+    color: white; 
+}
+
+.achievement-section, .achievements-in-progress-section, .achievements-completed-section {
+    margin: 20px 0;
+}
+
+.achievement-grid, .achievements-in-progress-grid, .achievements-completed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.achievement-tags {
+    display: flex;
+    gap: 10px;
+}
+
+
+.achievement-tag {
+    background-color: #1F75FE;
+    border-radius: 5px;
+    padding: 2.5px 3.5px;
+    font-size: 15px;
+    color: white;
+}
+
+.achievement-inp-tag {
+    background-color: #FF4500;
+    border-radius: 5px;
+    padding: 2.5px 3.5px;
+    font-size: 15px;
+    color: white;
+}
+
+.achievement-completed-tag {
+    background-color: #32CD32;
+    border-radius: 5px;
+    padding: 2.5px 3.5px;
+    font-size: 15px;
+    color: white;
+}
+
+.achievement-action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-bottom: 10px; 
+}
+
+.achievement-btn {
+    padding: 2.5px;
+}
+
+.achievement-card, .achievements-in-progress-card, .achievements-completed-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    text-align: justify;
+}
+
+.achievement-card:hover, .achievements-in-progress-card:hover, .achievements-completed-card:hover {
+    box-shadow: 0 0 5px 1.5px var(--color-primary-a20);
+    transform: scale(1.002);
+    border: 1px solid var(--color-primary-a20);
+}
+
+.dark-theme .achievement-card, 
+.dark-theme .achievements-in-progress-card, 
+.dark-theme .achievements-completed-card {
+    background-color: var(--color-surface-a20);
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 4px 12px; 
+    width: auto;
+    height: auto;
+    text-align: justify;
+}
+
+.dark-theme .achievement-card:hover,
+.dark-theme .achievements-in-progress-card:hover,
+.dark-theme .achievements-completed-card:hover {
+    box-shadow: 0 0 5px 1px #FF5F1F;
+    transform: scale(1.002);
+    border: 1px solid #FF5F1F;
+    background-color: var(--color-surface-a10);
+}
+
+.achievement-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.achievement-pagination-button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.achievement-pagination-numbers {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.achievement-pagination-number {
+    color: black;
+    text-decoration: underline;
+    margin: 20px 5px;
+    cursor: pointer;
+}
+
+.achievement-pagination-number:hover {
+    text-decoration: none;
+    color: #FF5733;
+    font-weight: bold;
+}
+
+.achievement-pagination-button:hover {
+    background-color: var(--color-primary-a20);
+    color: white;
+}
+
+.dark-theme .achievement-pagination-number {
+    color: white;
+    text-decoration: underline;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.dark-theme .achievement-pagination-number:hover {
+    text-decoration: none;
+    color: #FF5733;
+    font-weight: bold;
+}
+
+.achievement-pagination-number.active {
+    background-color: var(--color-primary-a20); 
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+
+
+@media (max-width: 1200px) {
+    .achievement-grid, .achievements-in-progress-grid, .achievements-completed-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 700px) {
+    .achievement-grid, .achievements-in-progress-grid, .achievements-completed-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 15px;
+    }
+}
