@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'travelling.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="travellings-section" id="travellings-section-nav-id">
+    <h2 class="travellings-section-heading">Travellings</h2>
+    
+    <form id="travelling-form" method="post">
+        {% csrf_token %}
+        <div class="travelling-form-container">
+            <input type="text" name="destination" class="travelling-add-input" required placeholder="Add a travelling">
+            <button type="submit" name="add_travel" class="travelling-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+    
+    <div class="travelling-progress-urls">
+        <a href="#travellings-section-nav-id" class="travelling-link" onclick="setActiveTravellingLink(this, 'travellings-section'); return false;">
+            <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> Travellings
+        </a>
+        <a href="#travellings-section-nav-id" class="travelling-link" onclick="setActiveTravellingLink(this, 'travellings-in-progress-section'); return false;">
+            <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> In Progress
+        </a>
+        <a href="#travellings-section-nav-id" class="travelling-link" onclick="setActiveTravellingLink(this, 'travellings-completed-section'); return false;">
+            <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> Completed
+        </a>
+    </div>
+
+    <div class="travelling-section" id="travellings-section">
+        
+        <div class="travelling-grid" id="travelling-grid">
+            {% if travels %}
+                {% for travel in travels %}
+                <div class="travelling-card">
+                    <div class="travelling-tags">
+                        <span class="travelling-tag">Travelling</span>
+                    </div>
+                    <div class="travelling-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            {% if editing_travel_id == travel.id %}
+                                <input type="text" name="destination" value="{{ editing_travel_text }}" required>
+                                <button type="submit" name="save_travel">
+                                    <i class="fa-solid fa-check travelling-btn" style="color: #28a745;"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" name="edit_travel">
+                                    <i class="fa-solid fa-pen travelling-btn" style="color: #d58400;"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+        
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            <button type="submit" name="mark_in_progress">
+                                <i class="fa-regular fa-hourglass-half travelling-btn" style="color: #ff9300;"></i>
+                            </button>
+                        </form>
+        
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            <button type="submit" name="delete_travel">
+                                <i class="fa-solid fa-trash travelling-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="display: {% if editing_travel_id == travel.id %}none{% else %}inline{% endif %};">{{ travel.destination }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-travels">
+                    <p style="text-align: center;">Please add a new travel destination. No travel destinations remaining.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="travelling-pagination">
+          <span class="travelling-pagination-numbers">
+              {% if travels.has_previous %}
+                  <a href="?page=1" class="travelling-pagination-button"><i class="fa-solid fa-caret-left"></i></a>
+              {% endif %}
+              {% for num in travels.paginator.page_range %}
+                  {% if travels.number == num %}
+                      <span class="travelling-pagination-number active">{{ num }}</span>
+                  {% else %}
+                      <a href="?page={{ num }}" class="travelling-pagination-number">{{ num }}</a>
+                  {% endif %}
+              {% endfor %}
+              {% if travels.has_next %}
+                  <a href="?page={{ travels.paginator.num_pages }}" class="travelling-pagination-button"><i class="fa-solid fa-caret-right"></i></a>
+              {% endif %}
+          </span>
+        </div>
+        
+        
+
+    </div>
+
+    <div class="travellings-in-progress-section" id="travellings-in-progress-section" style="display: none;">
+        
+
+        <div class="travellings-in-progress-grid" id="travellings-in-progress-grid">
+            {% if in_progress_travels %}
+                {% for travel in in_progress_travels %}
+                <div class="travellings-in-progress-card">
+                    <div class="travelling-tags">
+                        <span class="travelling-inp-tag">{{ travel.status }}</span>
+                    </div>
+                    <div class="travelling-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            <button type="submit" name="complete_task">
+                                <i class="fa-solid fa-circle-check" style="color: #00f900;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            <button type="submit" name="delete_travel">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ travel.destination }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-travels">
+                    <p style="text-align: center;">No travels in progress.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="travelling-pagination">
+            {% if in_progress_travels.has_previous %}
+                <a href="?in_progress_page={{ in_progress_travels.previous_page_number }}" class="travelling-pagination-button">
+                    <i class="fa-solid fa-caret-left"></i>
+                </a>
+            {% endif %}
+            
+            <span class="travelling-pagination-numbers">
+                {% for num in in_progress_travels.paginator.page_range %}
+                    {% if in_progress_travels.number == num %}
+                        <span class="travelling-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?in_progress_page={{ num }}" class="travelling-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </span>
+        
+            {% if in_progress_travels.has_next %}
+                <a href="?in_progress_page={{ in_progress_travels.next_page_number }}" class="travelling-pagination-button">
+                    <i class="fa-solid fa-caret-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        
+        
+        
+
+    </div>
+
+    <div class="travellings-completed-section" id="travellings-completed-section" style="display: none;">
+        
+        <div class="travellings-completed-grid" id="travellings-completed-grid">
+            {% if completed_travels %}
+                {% for travel in completed_travels %}
+                <div class="travellings-completed-card">
+                    <div class="travelling-tags">
+                        <span class="travelling-completed-tag">Completed</span>
+                    </div>
+                    <div class="travelling-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                            <button type="submit" name="delete_travel">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div> 
+                    {{ travel.destination }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-travels">
+                    <p style="text-align: center;">No completed travels.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="travelling-pagination">
+            <span class="travelling-pagination-numbers">
+                {% if completed_travels.has_previous %}
+                    <a href="?completed_page={{ completed_travels.previous_page_number }}" class="travelling-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in completed_travels.paginator.page_range %}
+                    {% if completed_travels.number == num %}
+                        <span class="travelling-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?completed_page={{ num }}" class="travelling-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if completed_travels.has_next %}
+                    <a href="?completed_page={{ completed_travels.next_page_number }}" class="travelling-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+    </div>
+</section>
+
+
+
+{% endblock content %}
