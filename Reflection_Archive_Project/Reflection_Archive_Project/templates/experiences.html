@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'experiences.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="experiences-section" id="experiences-section-nav-id">
+    <h2 class="experiences-section-heading">Experiences</h2>
+    
+    <form id="experience-form" method="post">
+        {% csrf_token %}
+        <div class="experience-form-container">
+            <input type="text" name="experience_text" class="experience-add-input" required placeholder="Add an experience">
+            <button type="submit" name="add_experience" class="experience-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+  
+    <div class="experience-progress-urls">
+        <a href="#experiences-section-nav-id" class="experience-link" onclick="setActiveExperienceLink(this, 'experiences-section'); return false;">
+           <i class="fa-solid fa-briefcase" style="color: #0433ff;"></i> Experiences
+        </a>
+        <a href="#experiences-section-nav-id" class="experience-link" onclick="setActiveExperienceLink(this, 'experiences-in-progress-section'); return false;">
+          <i class="fa-solid fa-thumbs-up" style="color: #03C03C;"></i>   GOOD
+        </a>
+        <a href="#experiences-section-nav-id" class="experience-link" onclick="setActiveExperienceLink(this, 'experiences-completed-section'); return false;">
+         <i class="fa-solid fa-thumbs-down" style="color: #FF0800;"></i>     BAD
+        </a>
+    </div>
+
+    <div class="experience-section" id="experiences-section">
+        
+        <div class="experience-grid" id="experience-grid">
+            {% if experiences %}
+                {% for experience in experiences %}
+                <div class="experience-card">
+                    <div class="experience-tags">
+                        <span class="experience-tag">Experience</span>
+                    </div>
+                    <div class="experience-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                            {% if editing_experience_id == experience.id %}
+                                <input type="text" name="experience_text" value="{{ editing_experience_text }}" required>
+                                <button type="submit" name="save_experience">
+                                    <i class="fa-solid fa-check experience-btn" style="color: #28a745;"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" name="edit_experience">
+                                    <i class="fa-solid fa-pen experience-btn" style="color: #d58400;"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                            <button type="submit" name="mark_good">
+                                <i class="fa-solid fa-thumbs-up experience-btn" style="color: #03C03C;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                            <button type="submit" name="mark_bad">
+                                <i class="fa-solid fa-thumbs-down experience-btn" style="color: #FF0800;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                            <button type="submit" name="delete_experience">
+                                <i class="fa-solid fa-trash experience-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ experience.experience }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-experiences">
+                    <p style="text-align: center;">No experiences added yet.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="experience-pagination">
+            <span class="experience-pagination-numbers">
+                {% if experiences.has_previous %}
+                    <a href="?page={{ experiences.previous_page_number }}" class="experience-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in experiences.paginator.page_range %}
+                    {% if experiences.number == num %}
+                        <span class="experience-pagination-number">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="experience-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if experiences.has_next %}
+                    <a href="?page={{ experiences.next_page_number }}" class="experience-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+
+    </div>
+
+    <div class="experiences-in-progress-section" id="experiences-in-progress-section" style="display: none;">
+        
+        <div class="experiences-in-progress-grid" id="experiences-in-progress-grid">
+            {% if good_experiences %}
+                {% for experience in good_experiences %}
+                <div class="experiences-in-progress-card">
+                    <div class="experience-tags">
+                        <span class="experience-inp-tag">GOOD</span>
+                    </div>
+                    <div class="experience-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                            <button type="submit" name="delete_experience">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ experience.experience }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-experiences">
+                    <p style="text-align: center;">No good experiences found.</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="experience-pagination">
+            <span class="experience-pagination-numbers">
+                {% if good_experiences.has_previous %}
+                    <a href="?good_page=1" class="experience-pagination-button"><i class="fa-solid fa-caret-left"></i></a>
+                {% endif %}
+                {% for num in good_experiences.paginator.page_range %}
+                    {% if good_experiences.number == num %}
+                        <span class="experience-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?good_page={{ num }}" class="experience-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if good_experiences.has_next %}
+                    <a href="?good_page={{ good_experiences.paginator.num_pages }}" class="experience-pagination-button"><i class="fa-solid fa-caret-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        
+        
+
+
+    </div>
+
+    <div class="experiences-completed-section" id="experiences-completed-section" style="display: none;">
+        
+        <div class="experiences-completed-grid" id="experiences-completed-grid">
+            {% if bad_experiences %}
+                {% for experience in bad_experiences %}
+                    <div class="experiences-completed-card">
+                        <div class="experience-tags">
+                            <span class="experience-completed-tag">BAD</span>
+                        </div>
+                        <div class="experience-action-buttons">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="experience_id" value="{{ experience.id }}">
+                                <button type="submit" name="delete_experience">
+                                    <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {{ experience.experience }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-experiences">
+                    <p style="text-align: center;">No bad experiences found.</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="experience-pagination">
+            <span class="experience-pagination-numbers">
+                {% if bad_experiences.has_previous %}
+                    <a href="?bad_page={{ bad_experiences.previous_page_number }}" class="experience-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in bad_experiences.paginator.page_range %}
+                    {% if bad_experiences.number == num %}
+                        <span class="experience-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?bad_page={{ num }}" class="experience-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if bad_experiences.has_next %}
+                    <a href="?bad_page={{ bad_experiences.next_page_number }}" class="experience-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+        
+
+    </div>
+</section>
+
+
+{% endblock content %}

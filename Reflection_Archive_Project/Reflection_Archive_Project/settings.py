@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'PlansApp',
     'AchievementApp',
     'TravellingApp',
+    'ExeperienceApp',
 ]
 
 MIDDLEWARE = [
