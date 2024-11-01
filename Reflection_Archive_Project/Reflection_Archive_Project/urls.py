@@ -31,4 +31,6 @@ urlpatterns = [
     path('',include('ExeperienceApp.urls')),
     path('',include('Habitsapp.urls')),
     path('',include('MemoriesApp.urls')),
+    path('',include('LifegoalsApp.urls')),
+
 ]

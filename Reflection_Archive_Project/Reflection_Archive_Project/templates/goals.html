@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'goals.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+{% block content %}
+
+<section class="goals-section" id="goals-section-nav-id">
+    <h2 class="goals-section-heading">Goals</h2>
+    
+    <form id="goal-form" method="post">
+        {% csrf_token %}
+        <div class="goal-form-container">
+            <input type="text" name="goal_text" class="goal-add-input" required placeholder="Add a goal">
+            <button type="submit" name="add_goal" class="goal-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+    
+  
+    <div class="goal-progress-urls">
+        <a href="#goals-section-nav-id" class="goal-link" onclick="setActiveGoalLink(this, 'goals-section'); return false;">
+            <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> Goals
+        </a>
+        <a href="#goals-section-nav-id" class="goal-link" onclick="setActiveGoalLink(this, 'goals-in-progress-section'); return false;">
+            <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> In Progress
+        </a>
+        <a href="#goals-section-nav-id" class="goal-link" onclick="setActiveGoalLink(this, 'goals-completed-section'); return false;">
+            <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> Completed
+        </a>
+    </div>
+
+    <div class="goal-section" id="goals-section">
+        
+        <div class="goal-grid" id="goal-grid">
+            {% if goals %}
+                {% for goal in goals %}
+                <div class="goal-card">
+                    <div class="goal-tags">
+                        <span class="goal-tag">{{ goal.status }}</span>
+                    </div>
+                    <div class="goal-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                            {% if editing_goal_id == goal.id %}
+                                <input type="text" name="goal_text" value="{{ editing_goal_text }}" required>
+                                <button type="submit" name="save_goal">
+                                    <i class="fa-solid fa-check goal-btn" style="color: #28a745;"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" name="edit_goal">
+                                    <i class="fa-solid fa-pen goal-btn" style="color: #d58400;"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                            <button type="submit" name="mark_in_progress">
+                                <i class="fa-regular fa-hourglass-half goal-btn" style="color: #ff9300;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                            <button type="submit" name="delete_goal">
+                                <i class="fa-solid fa-trash goal-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="display: {% if editing_goal_id == goal.id %}none{% else %}inline{% endif %};">{{ goal.goal }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-goals">
+                    <p style="text-align: center;">Please add a new goal. No goals remaining.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="goal-pagination">
+            <span class="goal-pagination-numbers">
+                {% if goals.has_previous %}
+                    <a href="?page=1" class="goal-pagination-button"><i class="fa-solid fa-caret-left"></i></a>
+                {% endif %}
+                {% for num in goals.paginator.page_range %}
+                    {% if goals.number == num %}
+                        <span class="goal-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="goal-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if goals.has_next %}
+                    <a href="?page={{ goals.paginator.num_pages }}" class="goal-pagination-button"><i class="fa-solid fa-caret-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+    </div>
+
+    <div class="goals-in-progress-section" id="goals-in-progress-section" style="display: none;">
+        
+        <div class="goals-in-progress-grid" id="goals-in-progress-grid">
+            {% if in_progress_tasks %}
+                {% for task in in_progress_tasks %}
+                <div class="goals-in-progress-card">
+                    <div class="goal-tags">
+                        <span class="goal-inp-tag">In Progress</span>
+                    </div>
+                    <div class="goal-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ task.id }}">
+                            <button type="submit" name="complete_task">
+                                <i class="fa-solid fa-circle-check" style="color: #00f900;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ task.id }}">
+                            <button type="submit" name="delete_goal">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ task.goal }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-goals">
+                    <p style="text-align: center;">No goals in progress.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="goal-pagination">
+            <span class="goal-pagination-numbers">
+                {% if in_progress_tasks.has_previous %}
+                    <a href="?in_progress_page=1" class="goal-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in in_progress_tasks.paginator.page_range %}
+                    {% if in_progress_tasks.number == num %}
+                        <span class="goal-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?in_progress_page={{ num }}" class="goal-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if in_progress_tasks.has_next %}
+                    <a href="?in_progress_page={{ in_progress_tasks.paginator.num_pages }}" class="goal-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+        
+
+    </div>
+
+    <div class="goals-completed-section" id="goals-completed-section" style="display: none;">
+        
+        <div class="goals-completed-grid" id="goals-completed-grid">
+            {% if completed_tasks %}
+                {% for completed in completed_tasks %}
+                <div class="goals-completed-card">
+                    <div class="goal-tags">
+                        <span class="goal-completed-tag">Completed</span>
+                    </div>
+                    <div class="goal-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="goal_id" value="{{ completed.id }}">
+                            <button type="submit" name="delete_goal">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ completed.goal }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-goals">
+                    <p style="text-align: center;">No completed goals.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="goal-pagination">
+            <span class="goal-pagination-numbers">
+                {% if completed_tasks.has_previous %}
+                    <a href="?completed_page=1" class="goal-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in completed_tasks.paginator.page_range %}
+                    {% if completed_tasks.number == num %}
+                        <span class="goal-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?completed_page={{ num }}" class="goal-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if completed_tasks.has_next %}
+                    <a href="?completed_page={{ completed_tasks.paginator.num_pages }}" class="goal-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+    </div>
+</section>
+
+
+
+{% endblock content %}
