@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'habits.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="habits-section" id="habits-section-nav-id">
+    <h2 class="habits-section-heading">Habits</h2>
+    
+    <form id="habit-form" method="post">
+        {% csrf_token %}
+        <div class="habit-form-container">
+            <input type="text" name="habit_text" class="habit-add-input" required placeholder="Add a habit">
+            <button type="submit" name="add_habit" class="habit-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+  
+    <div class="habit-progress-urls">
+        <a href="#habits-section-nav-id" class="habit-link" onclick="setActiveHabitLink(this, 'habits-section'); return false;">
+            <i class="fa-solid fa-table-list" style="color: #0433ff;"></i> Habits
+        </a>
+        <a href="#habits-section-nav-id" class="habit-link" onclick="setActiveHabitLink(this, 'habits-in-progress-section'); return false;">
+            <i class="fa-regular fa-hourglass-half" style="color: #ff9300;"></i> In Progress
+        </a>
+        <a href="#habits-section-nav-id" class="habit-link" onclick="setActiveHabitLink(this, 'habits-completed-section'); return false;">
+            <i class="fa-solid fa-circle-check" style="color: #00f900;"></i> Completed
+        </a>
+    </div>
+
+    <div class="habit-section" id="habits-section">
+        
+        <div class="habit-grid" id="habit-grid">
+            {% for habit in habits %}
+                <div class="habit-card">
+                    <div class="habit-tags">
+                        <span class="habit-tag">Habit</span>
+                    </div>
+                    <div class="habit-action-buttons">
+                        {% if editing_habit_id == habit.id %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="habit_text" value="{{ editing_habit_text }}" required>
+                                <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                                <button type="submit" name="save_habit">
+                                    <i class="fa-solid fa-check habit-btn" style="color: #28a745;"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                                <button type="submit" name="edit_habit">
+                                    <i class="fa-solid fa-pen habit-btn" style="color: #d58400;"></i>
+                                </button>
+                            </form>
+                            <form method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                                <button type="submit" name="mark_in_progress">
+                                    <i class="fa-regular fa-hourglass-half habit-btn" style="color: #ff9300;"></i>
+                                </button>
+                            </form>
+                            <form method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                                <button type="submit" name="delete_habit">
+                                    <i class="fa-solid fa-trash habit-btn" style="color: #ff2600;"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    {{ habit.habit }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="habit-pagination">
+            <span class="habit-pagination-numbers">
+                {% if habits.has_previous %}
+                    <a href="?page=1" class="habit-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in habits.paginator.page_range %}
+                    {% if habits.number == num %}
+                        <span class="habit-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="habit-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if habits.has_next %}
+                    <a href="?page={{ habits.paginator.num_pages }}" class="habit-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+        
+    </div>
+
+    <div class="habits-in-progress-section" id="habits-in-progress-section" style="display: none;">
+        
+        <div class="habits-in-progress-grid" id="habits-in-progress-grid">
+            {% for habit in in_progress_habits %}
+                <div class="habits-in-progress-card">
+                    <div class="habit-tags">
+                        <span class="habit-inp-tag">In Progress</span>
+                    </div>
+                    <div class="habit-action-buttons">
+                        <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                            <button type="submit" name="mark_complete" title="Mark as Complete">
+                                <i class="fa-solid fa-circle-check" style="color: #00f900;"></i>
+                            </button>
+                        </form>
+                        <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                            <button type="submit" name="delete_habit" title="Delete Habit">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ habit.habit }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="habit-pagination">
+            {% if in_progress_habits.has_previous %}
+                <a href="?page_in_progress={{ in_progress_habits.previous_page_number }}" class="habit-pagination-button">
+                    <i class="fa-solid fa-caret-left"></i>
+                </a>
+            {% endif %}
+            <span class="habit-pagination-numbers">
+                {% for num in in_progress_habits.paginator.page_range %}
+                    {% if in_progress_habits.number == num %}
+                        <span class="habit-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?page_in_progress={{ num }}" class="habit-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </span>
+            {% if in_progress_habits.has_next %}
+                <a href="?page_in_progress={{ in_progress_habits.next_page_number }}" class="habit-pagination-button">
+                    <i class="fa-solid fa-caret-right"></i>
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="habits-completed-section" id="habits-completed-section" style="display: none;">
+        
+        <div class="habits-completed-grid" id="habits-completed-grid">
+            {% for habit in completed_habits %}
+                <div class="habits-completed-card">
+                    <div class="habit-tags">
+                        <span class="habit-completed-tag">Completed</span>
+                    </div>
+                    <div class="habit-action-buttons">
+                        <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                            <button type="submit" name="delete_habit" title="Delete Habit">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ habit.habit }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="habit-pagination">
+            {% if completed_habits.has_previous %}
+                <a href="?completed_page={{ completed_habits.previous_page_number }}" class="habit-pagination-button">
+                    <i class="fa-solid fa-caret-left"></i>
+                </a>
+            {% endif %}
+            <span class="habit-pagination-numbers">
+                {% for num in completed_habits.paginator.page_range %}
+                    {% if completed_habits.number == num %}
+                        <span class="habit-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?completed_page={{ num }}" class="habit-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </span>
+            {% if completed_habits.has_next %}
+                <a href="?completed_page={{ completed_habits.next_page_number }}" class="habit-pagination-button">
+                    <i class="fa-solid fa-caret-right"></i>
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+
+{% endblock content %}
