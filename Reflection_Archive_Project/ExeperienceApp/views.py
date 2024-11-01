@@ -18,11 +18,6 @@ def experiences_page(request, user_id):
     good_page_number = request.GET.get('good_page')
     good_experiences = paginator_good.get_page(good_page_number)
 
-    # bad_list = ExperienceModel.objects.filter(user=user, status='BAD')
-    # paginator_bad = Paginator(bad_list, 6)
-    # bad_page_number = request.GET.get('bad_page')
-    # bad_experiences = paginator_bad.get_page(bad_page_number)
-
     bad_list = ExperienceModel.objects.filter(user=user, status='BAD')
     paginator_bad = Paginator(bad_list, 6)
     bad_page_number = request.GET.get('bad_page', '1')
@@ -31,8 +26,6 @@ def experiences_page(request, user_id):
         bad_page_number = '1'
 
     bad_experiences = paginator_bad.get_page(int(bad_page_number))
-
-
 
     if request.method == 'POST':
         if 'add_experience' in request.POST:

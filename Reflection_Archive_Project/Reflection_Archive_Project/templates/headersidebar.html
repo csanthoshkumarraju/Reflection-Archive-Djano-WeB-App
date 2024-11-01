@@ -35,7 +35,7 @@
             <li><a href="{% url "travel_page" user.id  %}"><i class="fa-solid fa-plane fa-rotate-by" style="--fa-rotate-angle: 330deg;"></i><span class="menu-text">Travelling</span></a></li>
             <li><a href="{% url "experiences_page" user.id %}"><i class="fa-solid fa-briefcase"></i><span class="menu-text">Experiences</span></a></li> 
             <li><a href="{% url "habits_page" user.id %}"><i class="fa-regular fa-calendar-check"></i><span class="menu-text">Habits</span></a></li>
-            <li><a href="#memories-section-nav-id"><i class="fa-solid fa-sd-card"></i><span class="menu-text">Memories</span></a></li>
+            <li><a href="{% url "memories_page" user.id %}"><i class="fa-solid fa-sd-card"></i><span class="menu-text">Memories</span></a></li>
             <li><a href="#goals-section-nav-id"><i class="fa-solid fa-bullseye"></i><span class="menu-text">Life Goals</span></a></li>
             <li><a href="#Milestones-section-nav-id"><i class="fas fa-flag"></i><span class="menu-text">Milestones</span></a></li>
            {% comment %} <li><a href="#Register-section-nav-id"><i class="fa-solid fa-user-plus"></i><span class="menu-text">Register</span></a></li>

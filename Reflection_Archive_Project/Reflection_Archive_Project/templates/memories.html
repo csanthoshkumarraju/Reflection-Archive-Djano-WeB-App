@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'memories.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="memories-section" id="memories-section-nav-id">
+    <h2 class="memories-section-heading">Memories</h2>
+    
+    <form id="memory-form" method="post">
+        {% csrf_token %}
+        <div class="memory-form-container">
+            <input type="text" name="memory_text" class="memory-add-input" required placeholder="Add a memory">
+            <button type="submit" name="add_memory" class="memory-add-button">
+                <i class="fa-solid fa-plus fa-lg"></i> Add
+            </button>
+        </div>
+    </form>
+    
+  
+    <div class="memory-progress-urls">
+        <a href="#memories-section-nav-id" class="memory-link" onclick="setActiveMemoryLink(this, 'memories-section'); return false;">
+           <i class="fa-solid fa-sd-card" style="color: #0433ff;"></i> Memories
+        </a>
+        <a href="#memories-section-nav-id" class="memory-link" onclick="setActiveMemoryLink(this, 'memories-in-progress-section'); return false;">
+          <i class="fa-solid fa-thumbs-up" style="color: #03C03C;"></i>   BEST
+        </a>
+        <a href="#memories-section-nav-id" class="memory-link" onclick="setActiveMemoryLink(this, 'memories-completed-section'); return false;">
+         <i class="fa-solid fa-thumbs-down" style="color: #FF0800;"></i>     WORST
+        </a>
+    </div>
+
+    <div class="memory-section" id="memories-section">
+        
+        <div class="memory-grid" id="memory-grid">
+            {% if memories %}
+                {% for memory in memories %}
+                <div class="memory-card">
+                    <div class="memory-tags">
+                        <span class="memory-tag">Memory</span>
+                    </div>
+                    <div class="memory-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            {% if editing_memory_id == memory.id %}
+                                <input type="text" name="memory_text" value="{{ editing_memory_text }}" required>
+                                <button type="submit" name="save_memory">
+                                    <i class="fa-solid fa-check memory-btn" style="color: #28a745;"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" name="edit_memory">
+                                    <i class="fa-solid fa-pen memory-btn" style="color: #d58400;"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            <button type="submit" name="mark_best">
+                                <i class="fa-solid fa-thumbs-up memory-btn" style="color: #03C03C;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            <button type="submit" name="mark_worst">
+                                <i class="fa-solid fa-thumbs-down memory-btn" style="color: #FF0800;"></i>
+                            </button>
+                        </form>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            <button type="submit" name="delete_memory">
+                                <i class="fa-solid fa-trash memory-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    {{ memory.memory }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-memories">
+                    <p style="text-align: center;">No memories added yet.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="memory-pagination">
+            <span class="memory-pagination-numbers">
+                {% if memories.has_previous %}
+                    <a href="?page={{ memories.previous_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in memories.paginator.page_range %}
+                    {% if memories.number == num %}
+                        <span class="memory-pagination-number">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="memory-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if memories.has_next %}
+                    <a href="?page={{ memories.next_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+    </div>
+
+    <div class="memories-in-progress-section" id="memories-in-progress-section" style="display: none;">
+        
+        <div class="memories-in-progress-grid" id="memories-in-progress-grid">
+            {% if best_memories %}
+                {% for memory in best_memories %}
+                <div class="memories-in-progress-card">
+                    <div class="memory-tags">
+                        <span class="memory-inp-tag">BEST</span>
+                    </div>
+                    <div class="memory-action-buttons">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            <button type="submit" name="delete_memory">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div> 
+                    {{ memory.memory }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-memories">
+                    <p style="text-align: center;">No best memories found.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="memory-pagination">
+            <span class="memory-pagination-numbers">
+                {% if best_memories.has_previous %}
+                    <a href="?best_page={{ best_memories.previous_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in best_memories.paginator.page_range %}
+                    {% if best_memories.number == num %}
+                        <span class="memory-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?best_page={{ num }}" class="memory-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if best_memories.has_next %}
+                    <a href="?best_page={{ best_memories.next_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+        
+
+    </div>
+
+    <div class="memories-completed-section" id="memories-completed-section" style="display: none;">
+        
+        <div class="memories-completed-grid" id="memories-completed-grid">
+            {% if worst_memories %}
+                {% for memory in worst_memories %}
+                <div class="memories-completed-card">
+                    <div class="memory-tags">
+                        <span class="memory-completed-tag">WORST</span>
+                    </div>
+                    <div class="memory-action-buttons">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_id" value="{{ memory.id }}">
+                            <button type="submit" name="delete_memory">
+                                <i class="fa-solid fa-trash" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </div> 
+                    {{ memory.memory }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-memories">
+                    <p style="text-align: center;">No worst memories found.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="memory-pagination">
+            <span class="memory-pagination-numbers">
+                {% if worst_memories.has_previous %}
+                    <a href="?worst_page={{ worst_memories.previous_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                {% endif %}
+                {% for num in worst_memories.paginator.page_range %}
+                    {% if worst_memories.number == num %}
+                        <span class="memory-pagination-number active">{{ num }}</span>
+                    {% else %}
+                        <a href="?worst_page={{ num }}" class="memory-pagination-number">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if worst_memories.has_next %}
+                    <a href="?worst_page={{ worst_memories.next_page_number }}" class="memory-pagination-button">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+        
+
+    </div>
+</section>
+
+
+
+{% endblock content %}
