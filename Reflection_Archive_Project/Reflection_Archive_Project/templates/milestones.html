@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'milestones.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+{% endblock css %}
+
+
+
+{% block content %}
+
+<section class="Milestones-section" id="Milestones-section-nav-id">
+    <h2 class="Milestones-section-heading">Milestones</h2>
+    
+    <form id="Milestones-form" method="post">
+    {% csrf_token %}
+    <div class="milestone-form-container">
+        <input type="text" name="milestone" class="Milestones-add-input" required placeholder="Add a Milestone">
+        <button type="submit" name="add_milestone" class="Milestones-add-button">
+            <i class="fa-solid fa-plus fa-lg"></i> Add
+        </button>
+    </div>
+</form>
+
+    
+
+
+{% comment %} <div class="milestone-container">
+    <div class="milestone" style="border-color: #4CAF50;">
+        <div class="number">01</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 1 -20/10/2024</div>
+    </div>
+    <div class="line"></div>
+    <div class="milestone" style="border-color: #FF9800;">
+        <div class="number">02</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 2 -20/10/2024</div>
+    </div>
+    <div class="line"></div>
+    <div class="milestone" style="border-color: #E91E63;">
+        <div class="number">03</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 3 -20/10/2024</div>
+    </div>
+    <div class="line"></div>
+    <div class="milestone" style="border-color: #3F51B5;">
+        <div class="number">04</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 4 -20/10/2024</div>
+    </div>
+    <div class="line"></div>
+    <div class="milestone" style="border-color: #9C27B0;">
+        <div class="number">05</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 5 -20/10/2024</div>
+    </div>
+    <div class="line"></div>
+    <div class="milestone" style="border-color: #FF5722;">
+        <div class="number">06</div>
+        <div class="horizontal-line"></div>
+        <div class="milestone-text">Milestone 6 -20/10/2024</div>
+    </div>
+</div> {% endcomment %}
+
+
+
+<div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; max-width: 600px; margin: auto; border-radius: 5px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center; color: #333;">Milestones for {{ user_name }}</h1>
+
+    <h2 style="margin-top: 20px;">Existing Milestones</h2>
+    {% for milestone in milestones %}
+        <div style="padding: 10px; margin: 10px 0; border-left: 5px solid #4CAF50; background-color: #f1f1f1;">
+            <strong>{{ milestone.date_added }}:</strong> {{ milestone.milestone }}
+        </div>
+    {% empty %}
+        <div style="padding: 10px; margin: 10px 0; border-left: 5px solid #4CAF50; background-color: #f1f1f1;">No milestones added yet.</div>
+    {% endfor %}
+</div>
+
+
+
+
+  
+</section>
+
+
+
+
+{% endblock content %}
