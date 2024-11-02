@@ -20,12 +20,38 @@ def milestones_page(request, user_id):
                 messages.success(request, 'Milestone added successfully')
                 return redirect('milestones_page', user_id=user.id)
 
+        elif 'delete_milestone' in request.POST:
+            milestone_id = request.POST.get('milestone_id')
+            if milestone_id:
+                milestone_item = get_object_or_404(MilestoneModel, id=milestone_id, user=user)
+                milestone_item.delete()
+                messages.success(request, 'Milestone deleted successfully')
+                return redirect('milestones_page', user_id=user.id)
+
+        elif 'edit_milestone' in request.POST:
+            milestone_id = request.POST.get('milestone_id')
+            milestone_item = get_object_or_404(MilestoneModel, id=milestone_id, user=user)
+            request.session['editing_milestone_id'] = milestone_item.id
+            request.session['editing_milestone_text'] = milestone_item.milestone
+            return redirect('milestones_page', user_id=user.id)
+
+        elif 'save_milestone' in request.POST:
+            milestone_id = request.POST.get('milestone_id')
+            milestone_text = request.POST.get('milestone_text')
+            if milestone_id and milestone_text:
+                milestone_item = get_object_or_404(MilestoneModel, id=milestone_id, user=user)
+                milestone_item.milestone = milestone_text
+                milestone_item.save()
+                del request.session['editing_milestone_id']
+                del request.session['editing_milestone_text']
+                messages.success(request, 'Milestone updated successfully')
+                return redirect('milestones_page', user_id=user.id)
+
     milestones = MilestoneModel.objects.filter(user=user).order_by('date_added')
-    form = MilestoneForm()
-    
+
     return render(request, 'milestones.html', {
-        'user': user,
-        'user_name': user_name,
-        'form': form,
         'milestones': milestones,
+        'editing_milestone_id': request.session.get('editing_milestone_id'),
+        'editing_milestone_text': request.session.get('editing_milestone_text'),
+        'user_name':user_name,
     })

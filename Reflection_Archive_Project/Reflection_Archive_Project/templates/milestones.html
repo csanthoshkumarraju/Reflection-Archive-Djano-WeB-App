@@ -69,17 +69,56 @@
 
 
 
-<div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; max-width: 600px; margin: auto; border-radius: 5px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-    <h1 style="text-align: center; color: #333;">Milestones for {{ user_name }}</h1>
+<div class="milestones-display-div" style="display: flex; justify-content: center;">
+    <div style="width: 40%;">
+        {% for milestone in milestones %}
+            <div class="milestone" style="border-color: {% if forloop.counter|divisibleby:6 %}#FF5722{% elif forloop.counter|divisibleby:5 %}#9C27B0{% elif forloop.counter|divisibleby:4 %}#3F51B5{% elif forloop.counter|divisibleby:3 %}#E91E63{% elif forloop.counter|divisibleby:2 %}#FF9800{% else %}#4CAF50{% endif %};">
+                <div class="number">{{ forloop.counter|add:"0"|slice:":-2" }}</div>
+                <div class="horizontal-line"></div>
+                {% comment %} <div class="milestone-text" style="display: flex; align-items: center; color:red"> {% endcomment %}
+                    <div class="milestone-text" style="display: flex; align-items: center;">
+                <div style="text-align: center; margin-right: 10px;">
+                        <div style="font-size: 12px;">{{ milestone.date_added|date:"F" }}</div>
+                        <div style="font-size: 24px; font-weight: bold;">{{ milestone.date_added|date:"d" }}</div>
+                        <div style="font-size: 12px;">{{ milestone.date_added|date:"Y" }}</div>
+                    </div>
+                    <div style="height: 70px; width: 1px; background-color: {% if forloop.counter|divisibleby:6 %}#FF5722{% elif forloop.counter|divisibleby:5 %}#9C27B0{% elif forloop.counter|divisibleby:4 %}#3F51B5{% elif forloop.counter|divisibleby:3 %}#E91E63{% elif forloop.counter|divisibleby:2 %}#FF9800{% else %}#4CAF50{% endif %}; margin: 0 10px;"></div>
+                    <span style="flex: 1; max-width: calc(100% - 70px); overflow-wrap: break-word; color: #333; display: flex; align-items: center;">
+                        {% if editing_milestone_id == milestone.id %}
+                            <form method="post" style="display:inline; flex: 1;">
+                                {% csrf_token %}
+                                <input type="hidden" name="milestone_id" value="{{ milestone.id }}">
+                                <input type="text" name="milestone_text" value="{{ editing_milestone_text }}" required style="flex: 1; font-size: 16px;">
+                                <button type="submit" name="save_milestone" style="background: none; border: none; cursor: pointer;">
+                                    <i class="fa-solid fa-check todo-btn" style="color: #28a745;"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="milestone-text-display" style="flex: 1;">{{ milestone.milestone }}</span>
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="milestone_id" value="{{ milestone.id }}">
+                                <button type="submit" name="edit_milestone" style="background: none; border: none; cursor: pointer;">
+                                    <i class="fa-solid fa-pen todo-btn" style="color: #d58400;"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="milestone_id" value="{{ milestone.id }}">
+                            <button type="submit" name="delete_milestone" style="background: none; border: none; cursor: pointer;">
+                                <i class="fa-solid fa-trash todo-btn" style="color: #ff2600;"></i>
+                            </button>
+                        </form>
+                    </span>
+                </div>
+            </div>
+            <div class="line"></div>
+        {% empty %}
+        <div class="no-milestones-message"> <b> No milestones added yet.</b> </div>
 
-    <h2 style="margin-top: 20px;">Existing Milestones</h2>
-    {% for milestone in milestones %}
-        <div style="padding: 10px; margin: 10px 0; border-left: 5px solid #4CAF50; background-color: #f1f1f1;">
-            <strong>{{ milestone.date_added }}:</strong> {{ milestone.milestone }}
-        </div>
-    {% empty %}
-        <div style="padding: 10px; margin: 10px 0; border-left: 5px solid #4CAF50; background-color: #f1f1f1;">No milestones added yet.</div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 
 
