@@ -12,14 +12,7 @@ from MilestonesApp.models import MilestoneModel
 
 def dashboard(request, user_id):
     user = RA_RegistrationModel.objects.get(id=user_id)
-    
-    if user_id:
-        try:
-            user = RA_RegistrationModel.objects.get(pk=user_id)
-            user_name = f"{user.first_name} {user.last_name}"
-        except RA_RegistrationModel.DoesNotExist:
-            user_name = ""
-
+    user_name = f"{user.first_name} {user.last_name}"
     
     todo_count = todo_model.objects.filter(user=user, status='To Do').count()
     in_progress_count = todo_model.objects.filter(user=user, status='In Progress').count()
@@ -40,7 +33,7 @@ def dashboard(request, user_id):
 
     Experiences_count = ExperienceModel.objects.filter(user=user, status="Experience").count()
     Experiences_in_progress_count = ExperienceModel.objects.filter(user=user, status='GOOD').count()
-    Experiences_completed_count = bad_list = ExperienceModel.objects.filter(user=user, status='BAD').count()
+    Experiences_completed_count  = ExperienceModel.objects.filter(user=user, status='BAD').count()
 
 
     Habits_count = HabitModel.objects.filter(user=user, status='To Do').count()
@@ -48,7 +41,7 @@ def dashboard(request, user_id):
     Habits_completed_count = HabitModel.objects.filter(user=user, status='Completed').count()
 
     Memories_in_progress_count = MemoryModel.objects.filter(user=user, status='BEST').count()
-    Memories_completed_count = bad_list = MemoryModel.objects.filter(user=user, status='WORST').count()
+    Memories_completed_count = MemoryModel.objects.filter(user=user, status='WORST').count()
 
     Goals_count = GoalModel.objects.filter(user=user, status='Goal').count()
     Goals_in_progress_count = GoalModel.objects.filter(user=user, status='In Progress').count()

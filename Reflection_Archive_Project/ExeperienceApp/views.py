@@ -7,8 +7,8 @@ from django.contrib import messages
 def experiences_page(request, user_id):
     user = get_object_or_404(RA_RegistrationModel, id=user_id)
     user_name = f"{user.first_name} {user.last_name}"
+    
     experiences_list = ExperienceModel.objects.filter(user=user, status="Experience")
-
     paginator = Paginator(experiences_list, 6)
     page_number = request.GET.get('page')
     experiences = paginator.get_page(page_number)
