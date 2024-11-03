@@ -10,9 +10,10 @@
     padding-left: 110px;
     padding-top: 90px;
     padding-right: 40px;
-    padding-bottom: 290px;
-    margin-bottom:-85px;
+    padding-bottom: 300px;
+    margin-bottom:-125px;
     margin-right:-8px;
+    margin-top: 20px;
 }
 
 .Login-section-heading {
@@ -334,7 +335,7 @@ input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
     color: black;
 }
 
-.dark-theme, .dark-theme body {
+.dark-theme body {
     background-color: var(--color-surface-a0);
     color: white;
 }

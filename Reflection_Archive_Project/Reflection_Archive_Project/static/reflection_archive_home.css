@@ -3200,6 +3200,7 @@ input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
     text-align: center;
     padding: 1rem;
     margin: 0;
+    margin-left:10px;
 }
 
 .dark-theme .RA-footer {
@@ -3209,6 +3210,8 @@ input[type="checkbox"]:checked + .toggle-label .toggle-slider::before {
 
 .dark-theme .copyrights {
     color:white;
+    text-align: center;
+    margin-left:50px;
 }
 
 
