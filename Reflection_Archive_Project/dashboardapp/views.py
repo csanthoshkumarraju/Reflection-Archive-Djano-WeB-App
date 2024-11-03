@@ -22,7 +22,6 @@ def dashboard(request, user_id):
     plan_in_progress_count = plan_model.objects.filter(user=user, status='In Progress').count()
     plan_completed_count = plan_model.objects.filter(user=user, status='Completed').count()
 
-
     Achievements_count = acheivements_model.objects.filter(user=user, achievment_status='achievement').count()
     Achievements_in_progress_count = acheivements_model.objects.filter(user=user, achievment_status='In Progress').count()
     Achievements_completed_count = acheivements_model.objects.filter(user=user, achievment_status='Completed').count()
@@ -34,7 +33,6 @@ def dashboard(request, user_id):
     Experiences_count = ExperienceModel.objects.filter(user=user, status="Experience").count()
     Experiences_in_progress_count = ExperienceModel.objects.filter(user=user, status='GOOD').count()
     Experiences_completed_count  = ExperienceModel.objects.filter(user=user, status='BAD').count()
-
 
     Habits_count = HabitModel.objects.filter(user=user, status='To Do').count()
     Habits_in_progress_count = HabitModel.objects.filter(user=user, status='In Progress').count()
